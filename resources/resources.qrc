@@ -6,6 +6,6 @@
         <file>icon_Open.png</file>
     </qresource>
     <qresource prefix="/data">
-        <file>mircos.csv</file>
+        <file>micros.csv</file>
     </qresource>
 </RCC>

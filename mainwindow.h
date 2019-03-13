@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QStandardItemModel>
 
 namespace Ui {
 class MainWindow;
@@ -20,8 +21,11 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QStandardItemModel *csvModel;
 
     virtual void closeEvent(QCloseEvent *e);
+
+
 };
 
 #endif // MAINWINDOW_H
