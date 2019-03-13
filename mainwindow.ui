@@ -6,55 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>603</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Генератор кода</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="btn_newProject">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>40</y>
-      <width>211</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>New Project</string>
-    </property>
-    <property name="icon">
-     <iconset resource="recources/recources.qrc">
-      <normaloff>:/icons/icon_Add.png</normaloff>:/icons/icon_Add.png</iconset>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_openProject">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>110</y>
-      <width>211</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Open Project</string>
-    </property>
-    <property name="icon">
-     <iconset resource="recources/recources.qrc">
-      <normaloff>:/icons/icon_Open.png</normaloff>:/icons/icon_Open.png</iconset>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>603</width>
      <height>22</height>
     </rect>
    </property>

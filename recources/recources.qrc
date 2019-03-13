@@ -5,4 +5,7 @@
         <file>icon_Help.png</file>
         <file>icon_Open.png</file>
     </qresource>
+    <qresource prefix="/data">
+        <file>mircos.csv</file>
+    </qresource>
 </RCC>
