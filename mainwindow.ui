@@ -14,14 +14,38 @@
    <string>Генератор кода</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTableView" name="tableView">
+   <widget class="QPushButton" name="btn_New">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>0</y>
-      <width>591</width>
-      <height>311</height>
+      <x>210</x>
+      <y>60</y>
+      <width>171</width>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>New project</string>
+    </property>
+    <property name="icon">
+     <iconset resource="resources/resources.qrc">
+      <normaloff>:/icons/icon_Add.png</normaloff>:/icons/icon_Add.png</iconset>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_Open">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>130</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open project</string>
+    </property>
+    <property name="icon">
+     <iconset resource="resources/resources.qrc">
+      <normaloff>:/icons/icon_Open.png</normaloff>:/icons/icon_Open.png</iconset>
     </property>
    </widget>
   </widget>

@@ -1,68 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMenuBar>
 #include <QMessageBox>
 #include <QCloseEvent>
-#include <QFile>
-#include <QDebug>
-#include <QTextStream>
 
+#include "targetdialog.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    //create model
-    csvModel = new QStandardItemModel(this);
-    ui->tableView->setModel(csvModel);
-
-    //open resource file
-    //and read it
-    QFile file(":/data/micros.csv");
-    if (!file.open(QFile::ReadOnly | QFile::Text)){
-        qDebug() << "File isn't exists";
-    } else {
-        //create stream
-        QTextStream in(&file);
-        bool header = true;
-        //read for end file
-        while(!in.atEnd()){
-            //line by line
-            QString line = in.readLine();
-            //add model to line
-            QList<QStandardItem *> standartItemList;
-            QStringList headerList;
-            //means that line split with ;
-            for (QString item : line.split(";")){
-                //create string list for table header
-                if (header)
-                    headerList << item;
-                else
-                    standartItemList.append(new QStandardItem(item));
-            }
-            //for header
-            if (header){
-                header = false;
-                csvModel->setHorizontalHeaderLabels(headerList);
-            }else{
-                csvModel->insertRow(csvModel->rowCount(), standartItemList);
-            }
-        }
-        file.close();
-    }
-/*
-    for (int i = 0; i < 18; i++){
-        ui->tableView->setColumnWidth(i, QHeaderView::ResizeToContents);
-    }
-    */
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete csvModel;
 }
 
 void MainWindow::closeEvent(QCloseEvent *e){
@@ -76,4 +26,21 @@ void MainWindow::on_actionExit_triggered()
 
     if (reply == QMessageBox::Yes)
         QApplication::quit();
+}
+
+void MainWindow::on_actionNew_project_triggered()
+{
+    on_btn_New_clicked();
+}
+
+void MainWindow::on_btn_New_clicked()
+{
+    TargetDialog targetDialog;
+    targetDialog.setModal(true);
+    targetDialog.exec();
+}
+
+void MainWindow::on_btn_Open_clicked()
+{
+
 }

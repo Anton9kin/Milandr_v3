@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QStandardItemModel>
 
 namespace Ui {
 class MainWindow;
@@ -19,9 +18,14 @@ public:
 private slots:
     void on_actionExit_triggered();
 
+    void on_actionNew_project_triggered();
+
+    void on_btn_New_clicked();
+
+    void on_btn_Open_clicked();
+
 private:
     Ui::MainWindow *ui;
-    QStandardItemModel *csvModel;
 
     virtual void closeEvent(QCloseEvent *e);
 
