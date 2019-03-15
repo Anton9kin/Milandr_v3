@@ -52,6 +52,7 @@ TargetDialog::TargetDialog(QWidget *parent) :
     //ui->tableView->setMaximumSize(w, h);
     //ui->tableView->setMinimumSize(w, h);
 
+    ui->tableView->selectRow(0);
     updateProcInfo(0);
 }
 
