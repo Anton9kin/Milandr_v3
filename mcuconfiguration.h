@@ -2,6 +2,7 @@
 #define MCUCONFIGURATION_H
 
 #include <QWidget>
+#include <QStandardItemModel>
 #include "classes/processor.h"
 
 namespace Ui {
@@ -20,11 +21,12 @@ public:
 
 private:
     Ui::MCUConfiguration *ui;
+    QStandardItemModel treeModel;
     Processor MCU;
 
 
-
-
+    void setTreeContent();
+    void fillItem(QStandardItem*, QString, QString);
 };
 
 #endif // MCUCONFIGURATION_H
