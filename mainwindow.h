@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QWidget>
 #include "classes/processor.h"
+#include "mcuconfiguration.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,7 +29,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Processor target;
+    MCUConfiguration MCUConfig;
 
     virtual void closeEvent(QCloseEvent *e);
 

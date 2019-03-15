@@ -8,6 +8,8 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->stackedWidget->addWidget(&MCUConfig);
 }
 
 MainWindow::~MainWindow()
@@ -37,8 +39,11 @@ void MainWindow::on_btn_New_clicked()
 {
     TargetDialog targetDialog;
     targetDialog.setModal(true);
+
     if (targetDialog.exec() == QDialog::Accepted){
-        target = targetDialog.getProccessor();
+        MCUConfig.setMCU(targetDialog.getProccessor());
+
+        ui->stackedWidget->setCurrentWidget(&MCUConfig);
     }
 }
 

@@ -29,17 +29,20 @@ SOURCES += \
         mainwindow.cpp \
     targetdialog.cpp \
     classes/processor.cpp \
-    utils/utils.cpp
+    utils/utils.cpp \
+    mcuconfiguration.cpp
 
 HEADERS += \
         mainwindow.h \
     targetdialog.h \
     classes/processor.h \
-    utils/utils.h
+    utils/utils.h \
+    mcuconfiguration.h
 
 FORMS += \
         mainwindow.ui \
-    targetdialog.ui
+    targetdialog.ui \
+    mcuconfiguration.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
