@@ -28,7 +28,7 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -117,7 +117,7 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -152,6 +152,8 @@
     <addaction name="actionNew_project"/>
     <addaction name="actionOpen_project"/>
     <addaction name="separator"/>
+    <addaction name="actionHome"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -170,6 +172,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionHome"/>
+   <addaction name="separator"/>
    <addaction name="actionNew_project"/>
    <addaction name="actionOpen_project"/>
   </widget>
@@ -213,6 +217,15 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionHome">
+   <property name="icon">
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/icon_home.png</normaloff>:/icons/icon_home.png</iconset>
+   </property>
+   <property name="text">
+    <string>Home</string>
    </property>
   </action>
  </widget>

@@ -27,9 +27,12 @@ private slots:
 
     void on_btn_Open_clicked();
 
+    void on_actionHome_triggered();
+
 private:
     Ui::MainWindow *ui;
     MCUConfiguration MCUConfig;
+    QWidget *startUp;
 
     virtual void closeEvent(QCloseEvent *e);
 

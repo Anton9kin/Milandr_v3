@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
 
+    startUp = ui->stackedWidget->widget(0);
+
     ui->stackedWidget->addWidget(&MCUConfig);
 }
 
@@ -50,4 +52,9 @@ void MainWindow::on_btn_New_clicked()
 void MainWindow::on_btn_Open_clicked()
 {
 
+}
+
+void MainWindow::on_actionHome_triggered()
+{
+    ui->stackedWidget->setCurrentWidget(startUp);
 }
