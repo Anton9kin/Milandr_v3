@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "classes/processor.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,8 +27,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Processor target;
 
     virtual void closeEvent(QCloseEvent *e);
+
 
 
 };

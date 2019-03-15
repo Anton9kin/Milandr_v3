@@ -7,7 +7,7 @@ Processor::Processor()
 }
 
 Processor::Processor(QStringList data){
-    name = data[0];
+    MCU = data[0];
     Freq = data[1];
     SPI = data[2];
     Tmax = data[3];

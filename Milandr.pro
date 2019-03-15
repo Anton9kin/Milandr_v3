@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     targetdialog.cpp \
-    classes/processor.cpp
+    classes/processor.cpp \
+    utils/utils.cpp
 
 HEADERS += \
         mainwindow.h \
     targetdialog.h \
-    classes/processor.h
+    classes/processor.h \
+    utils/utils.h
 
 FORMS += \
         mainwindow.ui \

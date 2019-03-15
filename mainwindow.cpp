@@ -37,7 +37,9 @@ void MainWindow::on_btn_New_clicked()
 {
     TargetDialog targetDialog;
     targetDialog.setModal(true);
-    targetDialog.exec();
+    if (targetDialog.exec() == QDialog::Accepted){
+        target = targetDialog.getProccessor();
+    }
 }
 
 void MainWindow::on_btn_Open_clicked()

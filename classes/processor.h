@@ -6,8 +6,8 @@
 
 class Processor
 {
-private:
-    QString name;
+public:
+    QString MCU;
     QString Freq;
     QString SPI;
     QString Tmax;
@@ -31,6 +31,7 @@ public:
     Processor();
     ~Processor();
     Processor(QStringList);
+
 
 };
 
