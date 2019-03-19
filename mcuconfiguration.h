@@ -33,6 +33,7 @@ private:
 
     void setTreeContent();
     void fillItem(QStandardItem*, QString, QString);
+    void updateModel(QStandardItem*);
 };
 
 #endif // MCUCONFIGURATION_H

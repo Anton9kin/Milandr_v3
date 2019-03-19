@@ -28,14 +28,32 @@ void MCUConfiguration::setTreeContent()
     ui->treeView->setModel(&treeModel);
 }
 
+void MCUConfiguration::updateModel(QStandardItem *item)
+{
+    int rows = treeModel.rowCount();
+
+    for (int r = 0 ; r < rows; r++){
+        QStandardItem* parent = treeModel.item(r, 0);
+        int cols = parent->rowCount();
+        for (int c = 0; c < cols; c++){
+            QStandardItem* child = parent->child(c, 0);
+            if (child == item){
+                if (item->checkState() == Qt::Checked){
+                    if (parent->background() != Qt::green){
+                        parent->setBackground(Qt::green);
+                    }
+                    break;
+                }else{
+                    if (parent->background() != Qt::white){
+                        parent->setBackground(Qt::white);
+                    }
+                }
+            }
+        }
+    }
+}
+
 void MCUConfiguration::onItemChanged(QStandardItem *item)
 {
-    QFont font;
-    if (item->checkState() == Qt::Checked){
-        font.setBold(true);
-        item->setFont(font);
-    }else {
-        font.setBold(false);
-        item->setFont(font);
-    }
+    updateModel(item);
 }

@@ -89,3 +89,10 @@ void TargetDialog::updateProcInfo(int i){
 Processor TargetDialog::getProccessor(){
     return curProc;
 }
+
+void TargetDialog::on_tableView_doubleClicked(const QModelIndex &index)
+{
+    on_tableView_clicked(index);
+    accept();
+}
+

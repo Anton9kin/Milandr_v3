@@ -29,6 +29,8 @@ public:
 private slots:
     void on_tableView_clicked(const QModelIndex &index);
 
+    void on_tableView_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::TargetDialog *ui;
     QStandardItemModel *csvModel;
