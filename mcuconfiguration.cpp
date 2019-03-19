@@ -17,7 +17,7 @@ MCUConfiguration::~MCUConfiguration()
 void MCUConfiguration::setMCU(Processor mcu)
 {
     this->MCU = mcu;
-    QString message = "You chose " + MCU.MCU;
+    QString message = "You chose " + MCU.getValue(KEY_MCU);
     ui->label->setText(message);
     setTreeContent();
 }

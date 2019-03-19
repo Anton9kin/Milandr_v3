@@ -25,11 +25,11 @@ TargetDialog::TargetDialog(QWidget *parent) :
     //set model content
     for (Processor proc : proccessorList){
         QList<QStandardItem *> standartList;
-        standartList.append(new QStandardItem(proc.MCU));
-        standartList.append(new QStandardItem(proc.Package));
-        standartList.append(new QStandardItem(proc.RAM));
-        standartList.append(new QStandardItem(proc.ROM));
-        standartList.append(new QStandardItem(proc.Pins));
+        standartList.append(new QStandardItem(proc.getValue(KEY_MCU)));
+        standartList.append(new QStandardItem(proc.getValue(KEY_PACKAGE)));
+        standartList.append(new QStandardItem(proc.getValue(KEY_RAM)));
+        standartList.append(new QStandardItem(proc.getValue(KEY_ROM)));
+        standartList.append(new QStandardItem(proc.getValue(KEY_PINS)));
 
         csvModel->insertRow(csvModel->rowCount(), standartList);
     }
@@ -70,19 +70,19 @@ void TargetDialog::on_tableView_clicked(const QModelIndex &index)
 void TargetDialog::updateProcInfo(int i){
 
     curProc = proccessorList.at(i);
-    ui->F_label->setText(curProc.Freq);
-    ui->SPI_label->setText(curProc.SPI);
-    ui->Tmax_label->setText(curProc.Tmax);
-    ui->Tmin_label->setText(curProc.Tmin);
-    ui->Uccmax_label->setText(curProc.Ucc_max);
-    ui->Uccmin_label->setText(curProc.Ucc_min);
-    ui->ADCch_label->setText(curProc.ADC_channels);
-    ui->ADCdig_label->setText(curProc.ADC_digits);
-    ui->DACch_label->setText(curProc.DAC_channels);
-    ui->DACdig_label->setText(curProc.DAC_digits);
-    ui->EthMAC_label->setText(curProc.Ethernet_MAC);
-    ui->EthPHY_label->setText(curProc.Ethernet_PHY);
-    ui->Core_label->setText(curProc.Core);
+    ui->F_label->       setText(curProc.getValue(KEY_FREQ));
+    ui->SPI_label->     setText(curProc.getValue(KEY_SPI));
+    ui->Tmax_label->    setText(curProc.getValue(KEY_TMAX));
+    ui->Tmin_label->    setText(curProc.getValue(KEY_TMIN));
+    ui->Uccmax_label->  setText(curProc.getValue(KEY_UMAX));
+    ui->Uccmin_label->  setText(curProc.getValue(KEY_UMIN));
+    ui->ADCch_label->   setText(curProc.getValue(KEY_ADC_CH));
+    ui->ADCdig_label->  setText(curProc.getValue(KEY_ADC_DIG));
+    ui->DACch_label->   setText(curProc.getValue(KEY_DAC_CH));
+    ui->DACdig_label->  setText(curProc.getValue(KEY_DAC_DIG));
+    ui->EthMAC_label->  setText(curProc.getValue(KEY_ETH_MAC));
+    ui->EthPHY_label->  setText(curProc.getValue(KEY_ETH_PHY));
+    ui->Core_label->    setText(curProc.getValue(KEY_CORE));
 
 }
 

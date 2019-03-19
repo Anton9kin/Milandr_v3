@@ -2,34 +2,28 @@
 #include <QStandardItem>
 #include <QString>
 
-#define TITLE_SPI   "SPI"
-#define TITLE_ADC   "ADC"
-#define TITLE_DAC   "DAC"
-#define TITLE_TIM   "TIMER"
-#define TITLE_USART   "USART"
-#define TITLE_WDT   "WDT"
-#define TITLE_IWDT   "IWDT"
-#define TITLE_SYSTICK   "SYSTICK"
-#define TITLE_MPU   "MPU"
-#define TITLE_BKP   "BackUp"
-#define TITLE_POWER   "Power"
-#define TITLE_EBC   "EBC"
-#define TITLE_USB   "USB"
-#define TITLE_CAN   "CAN"
-#define TITLE_COMP   "COMP"
-#define TITLE_I2C   "I2C"
-#define TITLE_DMA   "DMA"
-#define TITLE_ETH_MAC   "Ethernet"
+
 
 static void fillItem(QStandardItem *item, QString title, QString value){
     item->setText(title);
-    int iValue = value.toInt();
-    for (int i = 0; i < iValue; i++){
+    int iValue = 0;
+
+    if (!value.contains('/')){
+        iValue = value.toInt();
+
+        for (int i = 0; i < iValue; i++){
+            QString subTitle;
+            if (iValue == 1)
+                subTitle = QString("%1").arg(title);
+            else
+                subTitle = QString("%1%2").arg(title).arg(i);
+            QStandardItem *subItem = new QStandardItem(subTitle);
+            subItem->setCheckable(true);
+            item->appendRow(subItem);
+        }
+    }else{
         QString subTitle;
-        if (iValue == 1)
-            subTitle = QString("%1").arg(title);
-        else
-            subTitle = QString("%1%2").arg(title).arg(i);
+        subTitle = QString("%1").arg(title);
         QStandardItem *subItem = new QStandardItem(subTitle);
         subItem->setCheckable(true);
         item->appendRow(subItem);
@@ -39,44 +33,50 @@ static void fillItem(QStandardItem *item, QString title, QString value){
 //constructors
 Processor::Processor()
 {
-
+    tb_data.clear();
+    tb_periph.clear();
 }
 
 Processor::Processor(QStringList data){
-    MCU = data[0];
-    Freq = data[1];
-    SPI = data[2];
-    Tmax = data[3];
-    Tmin = data[4];
-    Ucc_max = data[5];
-    Ucc_min = data[6];
-    ADC_channels = data[7];
-    ADC_digits = data[8];
-    Pins = data[9];
-    RAM = data[10];
-    ROM = data[11];
-    DAC_channels = data[12];
-    DAC_digits = data[13];
-    Ethernet_MAC = data[14];
-    Ethernet_PHY = data[15];
-    Package = data[16];
-    Core = data[17];
-    Timer = data[18];
-    Usart = data[19];
-    WDT = data[20];
-    IWDT = data[21];
-    SysTick = data[22];
-    MPU = data[23];
-    BackUP = data[24];
-    Power = data[25];
-    EBC = data[26];
-    USB = data[27];
-    CAN = data[28];
-    ADC = data[29];
-    DAC = data[30];
-    COMP = data[31];
-    I2C = data[32];
-    DMA = data[33];
+
+    addToData(KEY_MCU,      data[0]);
+    addToData(KEY_FREQ,     data[1]);
+    addToPeriph(KEY_SPI,      data[2]);
+    addToData(KEY_TMAX,     data[3]);
+    addToData(KEY_TMIN,     data[4]);
+    addToData(KEY_UMAX,     data[5]);
+    addToData(KEY_UMIN,     data[6]);
+    addToData(KEY_ADC_CH,   data[7]);
+    addToData(KEY_ADC_DIG,  data[8]);
+    addToData(KEY_PINS,     data[9]);
+    addToData(KEY_RAM,     data[10]);
+    addToData(KEY_ROM,     data[11]);
+    addToData(KEY_DAC_CH,     data[12]);
+    addToData(KEY_DAC_DIG,     data[13]);
+    addToPeriph(KEY_ETH_MAC,     data[14]);
+    addToData(KEY_ETH_PHY,     data[15]);
+    addToData(KEY_PACKAGE,     data[16]);
+    addToData(KEY_CORE,     data[17]);
+    addToPeriph(KEY_TIM,     data[18]);
+    addToPeriph(KEY_USART,     data[19]);
+    addToPeriph(KEY_WDT,     data[20]);
+    addToPeriph(KEY_IWDT,     data[21]);
+    addToPeriph(KEY_SYSTICK,     data[22]);
+    addToPeriph(KEY_MPU,     data[23]);
+    addToPeriph(KEY_BKP,     data[24]);
+    addToPeriph(KEY_POWER,     data[25]);
+    addToPeriph(KEY_EBC,     data[26]);
+    addToPeriph(KEY_USB,     data[27]);
+    addToPeriph(KEY_CAN,     data[28]);
+    addToPeriph(KEY_ADC,     data[29]);
+    addToPeriph(KEY_DAC,     data[30]);
+    addToPeriph(KEY_COMP,     data[31]);
+    addToPeriph(KEY_I2C,     data[32]);
+    addToPeriph(KEY_DMA,     data[33]);
+    addToPeriph(KEY_SDIO,     data[34]);
+    addToPeriph(KEY_52070,     data[35]);
+    addToPeriph(KEY_18977,     data[36]);
+    addToPeriph(KEY_28147,     data[37]);
 }
 
 void Processor::takeModel(QStandardItemModel& model)
@@ -84,112 +84,39 @@ void Processor::takeModel(QStandardItemModel& model)
     model.clear();
     QStandardItem *item;
 
-    if (QString::compare(SPI,"-") != 0){
+    QHash<QString,QString>::iterator it = tb_periph.begin();
+
+    for (;it != tb_periph.end(); ++it){
+        //check what the peripheral is exist
         item = new QStandardItem();
-        fillItem(item, TITLE_SPI, SPI);
+        fillItem(item, it.key(), it.value());
         model.appendRow(item);
     }
+}
 
-    if (QString::compare(ADC,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_ADC, ADC);
-        model.appendRow(item);
+QString Processor::getValue(QString key)
+{
+    if (tb_data.contains(key))
+        return tb_data[key];
+
+    if (tb_periph.contains(key))
+        return tb_periph[key];
+
+    return "";
+}
+
+void Processor::addToData(QString key, QString value)
+{
+    if (!value.isEmpty()){
+        tb_data.insert(key, value);
     }
+}
 
-    if (QString::compare(DAC,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_DAC, DAC);
-        model.appendRow(item);
+void Processor::addToPeriph(QString key, QString value)
+{
+    if (!value.isEmpty()){
+        tb_periph.insert(key, value);
     }
-
-    if (QString::compare(Timer,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_TIM, Timer);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(Usart,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_USART, Usart);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(WDT,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_WDT, WDT);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(IWDT,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_IWDT, IWDT);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(SysTick,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_SYSTICK, SysTick);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(MPU,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_MPU, MPU);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(BackUP,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_BKP, BackUP);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(Power,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_POWER, Power);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(EBC,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_EBC, EBC);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(USB,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_USB, USB);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(CAN,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_CAN, CAN);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(COMP,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_COMP, COMP);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(I2C,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_I2C, I2C);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(DMA,"-") != 0){
-        item = new QStandardItem();
-        fillItem(item, TITLE_DMA, DMA);
-        model.appendRow(item);
-    }
-
-    if (QString::compare(Ethernet_MAC,"-") != 0){
-        model.appendRow(new QStandardItem(TITLE_ETH_MAC));
-    }
-
 }
 
 //deconstructor
