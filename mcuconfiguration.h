@@ -13,6 +13,12 @@ class MCUConfiguration : public QWidget
 {
     Q_OBJECT
 
+signals:
+   void  itemChanged(QStandardItem *item);
+
+public slots:
+    void onItemChanged(QStandardItem*);
+
 public:
     explicit MCUConfiguration(QWidget *parent = nullptr);
     ~MCUConfiguration();

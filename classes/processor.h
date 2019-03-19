@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QStandardItemModel>
 
 class Processor
 {
@@ -25,6 +26,22 @@ public:
     QString Ethernet_PHY;
     QString Package;
     QString Core;
+    QString Timer;
+    QString Usart;
+    QString WDT;
+    QString IWDT;
+    QString SysTick;
+    QString MPU;
+    QString BackUP;
+    QString Power;
+    QString EBC;
+    QString USB;
+    QString CAN;
+    QString ADC;
+    QString DAC;
+    QString COMP;
+    QString I2C;
+    QString DMA;
 
 
 public:
@@ -32,6 +49,7 @@ public:
     ~Processor();
     Processor(QStringList);
 
+    void takeModel(QStandardItemModel& model);
 
 };
 
