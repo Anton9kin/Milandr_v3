@@ -47,11 +47,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
+        <widget class="PackageView" name="graphicsView"/>
        </item>
       </layout>
      </widget>
@@ -69,6 +65,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PackageView</class>
+   <extends>QGraphicsView</extends>
+   <header>packageview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

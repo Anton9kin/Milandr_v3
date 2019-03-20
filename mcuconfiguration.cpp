@@ -1,5 +1,6 @@
 #include "mcuconfiguration.h"
 #include "ui_mcuconfiguration.h"
+#include <QPixmap>
 
 MCUConfiguration::MCUConfiguration(QWidget *parent) :
     QWidget(parent),
@@ -17,8 +18,7 @@ MCUConfiguration::~MCUConfiguration()
 void MCUConfiguration::setMCU(Processor mcu)
 {
     this->MCU = mcu;
-    QString message = "You chose " + MCU.getValue(KEY_MCU);
-    ui->label->setText(message);
+    updatePackageView();
     setTreeContent();
 }
 
@@ -51,6 +51,20 @@ void MCUConfiguration::updateModel(QStandardItem *item)
             }
         }
     }
+}
+
+void MCUConfiguration::updatePackageView()
+{
+    QString packagePath = QString(":/package/p_%1.png").arg(MCU.getValue(KEY_PACKAGE));
+    QImage image(packagePath);
+    item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+
+    scene = new QGraphicsScene(this);
+    ui->graphicsView->setScene(scene);
+    ui->graphicsView->setFocus();
+
+    scene->addItem(item);
+    item->setScale(1);
 }
 
 void MCUConfiguration::onItemChanged(QStandardItem *item)

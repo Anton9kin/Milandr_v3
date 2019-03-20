@@ -9,4 +9,22 @@
     <qresource prefix="/data">
         <file>micros.csv</file>
     </qresource>
+    <qresource prefix="/package">
+        <file>p_18.64-1В.png</file>
+        <file>p_4229.132-3.png</file>
+        <file>p_4244.256-3.png</file>
+        <file>p_4245.240-5.png</file>
+        <file>p_4245.240-6.01.png</file>
+        <file>p_5142.48-А.png</file>
+        <file>p_5153.64-1.png</file>
+        <file>p_BGA МК8303.576-1.png</file>
+        <file>p_LQFP64.png</file>
+        <file>p_LQFP144.png</file>
+        <file>p_МК 5153.64-2.png</file>
+        <file>p_МК 6109.144-А.png</file>
+        <file>p_МК 8307.144-АН3.png</file>
+        <file>p_Н09.28-1В.png</file>
+        <file>p_Н14.42-1В.png</file>
+        <file>p_Н16.48-1В.png</file>
+    </qresource>
 </RCC>

@@ -3,6 +3,10 @@
 
 #include <QWidget>
 #include <QStandardItemModel>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
+#include <QtGui>
+
 #include "classes/processor.h"
 
 namespace Ui {
@@ -30,10 +34,13 @@ private:
     QStandardItemModel treeModel;
     Processor MCU;
 
+    QGraphicsScene *scene;
+    QGraphicsItem *item;
 
     void setTreeContent();
     void fillItem(QStandardItem*, QString, QString);
     void updateModel(QStandardItem*);
+    void updatePackageView();
 };
 
 #endif // MCUCONFIGURATION_H
