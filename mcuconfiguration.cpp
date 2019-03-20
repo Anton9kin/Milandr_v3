@@ -55,16 +55,7 @@ void MCUConfiguration::updateModel(QStandardItem *item)
 
 void MCUConfiguration::updatePackageView()
 {
-    QString packagePath = QString(":/package/p_%1.png").arg(MCU.getValue(KEY_PACKAGE));
-    QImage image(packagePath);
-    item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-
-    scene = new QGraphicsScene(this);
-    ui->graphicsView->setScene(scene);
-    ui->graphicsView->setFocus();
-
-    scene->addItem(item);
-    item->setScale(1);
+    ui->graphicsView->set(MCU.getValue(KEY_PACKAGE));
 }
 
 void MCUConfiguration::onItemChanged(QStandardItem *item)

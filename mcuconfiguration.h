@@ -36,6 +36,7 @@ private:
 
     QGraphicsScene *scene;
     QGraphicsItem *item;
+    QGraphicsRectItem *text;
 
     void setTreeContent();
     void fillItem(QStandardItem*, QString, QString);
