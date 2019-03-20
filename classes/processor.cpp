@@ -77,6 +77,12 @@ Processor::Processor(QStringList data){
     addToPeriph(KEY_52070,     data[35]);
     addToPeriph(KEY_18977,     data[36]);
     addToPeriph(KEY_28147,     data[37]);
+    addToPeriph(KEY_CACHE,     data[38]);
+    addToPeriph(KEY_SPACE_WIRE,     data[39]);
+    addToPeriph(KEY_CCSDS,     data[40]);
+    addToPeriph(KEY_ECC,     data[41]);
+    addToPeriph(KEY_CRC,     data[42]);
+    addToPeriph(KEY_PINOUTS,     data[43]);
 }
 
 void Processor::takeModel(QStandardItemModel& model)

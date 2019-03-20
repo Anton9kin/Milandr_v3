@@ -44,6 +44,12 @@
 #define KEY_52070       "ГОСТ Р 52070-2003 (1553)"
 #define KEY_18977       "ГОСТ 18977-79 (ARINC)"
 #define KEY_28147       "ГОСТ 28147-89"
+#define KEY_CACHE       "CACHE"
+#define KEY_SPACE_WIRE  "SPACE_WIRE"
+#define KEY_CCSDS       "CCSDS"
+#define KEY_ECC         "ECC"
+#define KEY_CRC         "CRC"
+#define KEY_PINOUTS     "PINOUTS"
 
 class Processor
 {

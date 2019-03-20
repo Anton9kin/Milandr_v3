@@ -21,7 +21,9 @@ public:
     ~TargetDialog();
 
 private:
+    void fillCsvModel(QString targets = "");
     void updateProcInfo(int );
+    void addLabel(QString key, QString value, QString subV1 = "", QString subV2 = "");
 
 public:
     Processor getProccessor();
@@ -31,7 +33,10 @@ private slots:
 
     void on_tableView_doubleClicked(const QModelIndex &index);
 
+    void on_comboTargets_currentTextChanged(const QString &arg1);
+
 private:
+    int labelCounter;
     Ui::TargetDialog *ui;
     QStandardItemModel *csvModel;
     QVector<Processor> proccessorList;
