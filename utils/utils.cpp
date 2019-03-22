@@ -12,7 +12,7 @@ Utils::~Utils(){
 
 }
 
-QVector<Processor> Utils::getProcessor(QString filename){
+QVector<Processor> Utils::getProcessor(const QString &filename){
 
     QVector<Processor> procList;
 

@@ -4,7 +4,7 @@
 
 
 
-static void fillItem(QStandardItem *item, QString title, QString value){
+static void fillItem(QStandardItem *item, const QString &title, const QString &value){
     item->setText(title);
     int iValue = 0;
 
@@ -17,14 +17,14 @@ static void fillItem(QStandardItem *item, QString title, QString value){
                 subTitle = QString("%1").arg(title);
             else
                 subTitle = QString("%1%2").arg(title).arg(i);
-            QStandardItem *subItem = new QStandardItem(subTitle);
+            auto *subItem = new QStandardItem(subTitle);
             subItem->setCheckable(true);
             item->appendRow(subItem);
         }
     }else{
         QString subTitle;
         subTitle = QString("%1").arg(title);
-        QStandardItem *subItem = new QStandardItem(subTitle);
+        auto *subItem = new QStandardItem(subTitle);
         subItem->setCheckable(true);
         item->appendRow(subItem);
     }
@@ -100,7 +100,7 @@ void Processor::takeModel(QStandardItemModel& model)
     }
 }
 
-QString Processor::getValue(QString key)
+QString Processor::getValue(const QString &key)
 {
     if (tb_data.contains(key))
         return tb_data[key];
@@ -111,14 +111,14 @@ QString Processor::getValue(QString key)
     return "";
 }
 
-void Processor::addToData(QString key, QString value)
+void Processor::addToData(const QString &key, const QString &value)
 {
     if (!value.isEmpty()){
         tb_data.insert(key, value);
     }
 }
 
-void Processor::addToPeriph(QString key, QString value)
+void Processor::addToPeriph(const QString &key, const QString &value)
 {
     if (!value.isEmpty()){
         tb_periph.insert(key, value);

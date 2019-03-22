@@ -12,7 +12,7 @@ public:
     Utils();
     ~Utils();
 
-    static QVector<Processor> getProcessor(QString);
+    static QVector<Processor> getProcessor(const QString &filename);
 };
 
 #endif // UTILS_H

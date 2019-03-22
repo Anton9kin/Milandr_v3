@@ -3,8 +3,10 @@
 
 #include <QWidget>
 #include <QStandardItemModel>
+#include <QGridLayout>
 
 #include "classes/processor.h"
+#include "classes/ui/configbutton.h"
 
 namespace Ui {
 class MCUConfiguration;
@@ -30,11 +32,14 @@ private:
     Ui::MCUConfiguration *ui;
     QStandardItemModel treeModel;
     Processor MCU;
+    QVector<QString> listConfigButton;
+    QGridLayout grid;
 
     void setTreeContent();
     void fillItem(QStandardItem*, QString, QString);
     void updateModel(QStandardItem*);
-    void updatePackageView();
+    void addConfig(QStandardItem*);
+    void removeConfig(QStandardItem*);
 };
 
 #endif // MCUCONFIGURATION_H

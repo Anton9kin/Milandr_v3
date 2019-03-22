@@ -63,11 +63,11 @@ public:
     Processor(QStringList);
 
     void takeModel(QStandardItemModel& model);
-    QString getValue(QString key);
+    QString getValue(const QString &key);
 
 private:
-    void addToData(QString key, QString value);
-    void addToPeriph(QString key, QString value);
+    void addToData(const QString &key, const QString &value);
+    void addToPeriph(const QString &key, const QString &value);
 };
 
 #endif // PROCESSOR_H

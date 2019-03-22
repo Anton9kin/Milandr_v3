@@ -30,14 +30,16 @@ SOURCES += \
     targetdialog.cpp \
     classes/processor.cpp \
     utils/utils.cpp \
-    mcuconfiguration.cpp
+    mcuconfiguration.cpp \
+    classes/ui/configbutton.cpp
 
 HEADERS += \
         mainwindow.h \
     targetdialog.h \
     classes/processor.h \
     utils/utils.h \
-    mcuconfiguration.h
+    mcuconfiguration.h \
+    classes/ui/configbutton.h
 
 FORMS += \
         mainwindow.ui \
