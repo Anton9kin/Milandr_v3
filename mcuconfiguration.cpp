@@ -26,6 +26,7 @@ void MCUConfiguration::setTreeContent()
 {
     MCU.takeModel(treeModel);
     ui->treeView->setModel(&treeModel);
+    ui->treeView->setHeaderHidden(true);
 }
 
 void MCUConfiguration::updateModel(QStandardItem *item)
@@ -55,7 +56,6 @@ void MCUConfiguration::updateModel(QStandardItem *item)
 
 void MCUConfiguration::updatePackageView()
 {
-    ui->graphicsView->set(MCU.getValue(KEY_PACKAGE));
 }
 
 void MCUConfiguration::onItemChanged(QStandardItem *item)

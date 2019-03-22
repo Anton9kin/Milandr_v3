@@ -3,9 +3,6 @@
 
 #include <QWidget>
 #include <QStandardItemModel>
-#include <QGraphicsScene>
-#include <QGraphicsItem>
-#include <QtGui>
 
 #include "classes/processor.h"
 
@@ -33,10 +30,6 @@ private:
     Ui::MCUConfiguration *ui;
     QStandardItemModel treeModel;
     Processor MCU;
-
-    QGraphicsScene *scene;
-    QGraphicsItem *item;
-    QGraphicsRectItem *text;
 
     void setTreeContent();
     void fillItem(QStandardItem*, QString, QString);

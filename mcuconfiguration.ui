@@ -47,7 +47,7 @@
         </widget>
        </item>
        <item>
-        <widget class="PackageView" name="graphicsView"/>
+        <widget class="QWidget" name="widget" native="true"/>
        </item>
       </layout>
      </widget>
@@ -65,13 +65,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>PackageView</class>
-   <extends>QGraphicsView</extends>
-   <header>packageview.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
