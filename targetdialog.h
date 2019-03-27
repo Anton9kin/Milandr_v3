@@ -6,6 +6,7 @@
 #include <QDialog>
 #include <QStandardItemModel>
 #include <QVector>
+#include <QJsonObject>
 
 
 namespace Ui {
@@ -39,7 +40,7 @@ private:
     int labelCounter;
     Ui::TargetDialog *ui;
     QStandardItemModel *csvModel;
-    QVector<Processor> proccessorList;
+    QJsonObject procSeriesList;
     Processor curProc;
 };
 

@@ -2,6 +2,9 @@
 
 #include <QFile>
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 Utils::Utils()
 {
@@ -12,47 +15,28 @@ Utils::~Utils(){
 
 }
 
-QVector<Processor> Utils::getProcessor(const QString &filename){
-
-    QVector<Processor> procList;
-
+QJsonObject Utils::getProcessorFromJson(const QString &filename)
+{
+    QJsonValue procSeriesList;
+    QJsonObject root;
+    QString byteArray;
     //open resource file
     //and read it
     QFile file(filename);
     if (!file.open(QFile::ReadOnly | QFile::Text)){
         qDebug() << "File isn't exists";
     }
-    //fill table view
+    //fill
     else {
-        //create stream
-        QTextStream in(&file);
-        bool header = true;
-        //read for end file
-        while(!in.atEnd()){
-            //line by line
-            QString line = in.readLine();
-            //add model to line
-            QStringList headerList;
-            QStringList proccessorData;
-
-            //means that line split with ;
-            for (QString item : line.split(";")){
-                //create string list for table header
-                if (header)
-                    headerList << item;
-                else
-                    proccessorData << item;
-            }
-            //for header
-            if (header){
-                header = false;
-            }else{
-                Processor proc(proccessorData);
-                procList.append(proc);
-            }
-        }
+        byteArray = file.readAll();
         file.close();
+
+        QJsonDocument document = QJsonDocument::fromJson(byteArray.toUtf8());
+        //get root object
+        root = document.object();
+        QStringList keyRoot = root.keys();
+        procSeriesList = root.value(keyRoot.at(0));
     }
 
-    return procList;
+    return procSeriesList.toObject();
 }

@@ -52,21 +52,6 @@
        <string>All</string>
       </property>
      </item>
-     <item>
-      <property name="text">
-       <string>*1901ВЦ1*</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>*1986ВЕ1*</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>*1986ВЕ9*</string>
-      </property>
-     </item>
     </widget>
    </item>
    <item>

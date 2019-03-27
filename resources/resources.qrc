@@ -8,6 +8,7 @@
     </qresource>
     <qresource prefix="/data">
         <file>micros.csv</file>
+        <file>info.json</file>
     </qresource>
     <qresource prefix="/package">
         <file>p_18.64-1В.png</file>

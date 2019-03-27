@@ -5,7 +5,11 @@
 #include <QFile>
 #include <QDebug>
 #include <QLabel>
-#include <QSpacerItem>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QJsonArray>
+
+#define JSON_KEY_MCU_LIST   "MCU_list"
 
 TargetDialog::TargetDialog(QWidget *parent) :
     QDialog(parent),
@@ -19,7 +23,9 @@ TargetDialog::TargetDialog(QWidget *parent) :
     csvModel = new QStandardItemModel(this);
     ui->tableView->setModel(csvModel);
 
-    proccessorList = Utils::getProcessor(":/data/micros.csv");
+    procSeriesList = Utils::getProcessorFromJson(":/data/info.json");
+
+    ui->comboTargets->addItems(procSeriesList.keys());
 
     //set model content
     fillCsvModel();
@@ -59,26 +65,74 @@ void TargetDialog::fillCsvModel(QString targets)
     csvModel->clear();
     //set model header
     QStringList headerModel;
-    headerModel << "MCU" << "Package" << "RAM" << "ROM" << "IO";
+    const QJsonObject &seria = procSeriesList.value(procSeriesList.keys().at(0)).toObject();
+    const QJsonObject &mcu = seria.value(JSON_KEY_MCU_LIST).toArray().at(0).toObject();
+
+    for (QString key : mcu.keys()){
+        const QJsonValue &val = mcu.value(key);
+        if (val.isString())
+            headerModel.append(key);
+        else{
+            const QJsonObject &subVal = val.toObject();
+            QStringList sL = subVal.keys();
+            QString str = key;
+            str += "\n";
+            for (int i = 0; i < sL.length(); i++){
+                str += sL[i];
+                if ((i+1) < sL.length()){
+                    str += "/";
+                }
+            }
+
+            headerModel.append(str);
+        }
+    }
+
     csvModel->setHorizontalHeaderLabels(headerModel);
 
+    //clear all labels in left gridlayout
     QLayoutItem *item;
     while((item = ui->gridLayout->takeAt(0)) != nullptr){
         delete item->widget();
         delete item;
     }
 
-    for (Processor proc : proccessorList){
+    //define list of series
+    QStringList list;
+    if (targets.isEmpty())
+        list = procSeriesList.keys();
+    else
+        list.append(targets);
 
-        if (proc.getValue(KEY_MCU).contains(targets) || targets.isEmpty()){
+    for (QString seria : list){
+        //take seria
+        const QJsonObject &obj = procSeriesList.value(seria).toObject();
+        //take mcu_list
+        const QJsonArray &mcuList = obj.value(JSON_KEY_MCU_LIST).toArray();
+
+        //fill table
+        for (int i = 0; i < mcuList.count(); i++){
+
+            const QJsonObject &mcu = mcuList.at(i).toObject();
             QList<QStandardItem *> standartList;
 
-            standartList.append(new QStandardItem(proc.getValue(KEY_MCU)));
-            standartList.append(new QStandardItem(proc.getValue(KEY_PACKAGE)));
-            standartList.append(new QStandardItem(proc.getValue(KEY_RAM)));
-            standartList.append(new QStandardItem(proc.getValue(KEY_ROM)));
-            standartList.append(new QStandardItem(proc.getValue(KEY_PINS)));
-
+            for (QString headKey : mcu.keys()){
+                const QJsonValue &val = mcu.value(headKey);
+                if (val.isString())
+                    standartList.append(new QStandardItem(val.toString()));
+                else{
+                    const QJsonObject &subVal = val.toObject();
+                    QStringList sL = subVal.keys();
+                    QString str;
+                    for (int i = 0; i < sL.length(); i++){
+                        str += subVal.value(sL[i]).toString();
+                        if ((i+1) < sL.length()){
+                            str += "/";
+                        }
+                    }
+                    standartList.append(new QStandardItem(str));
+                }
+            }
             csvModel->insertRow(csvModel->rowCount(), standartList);
         }
     }
@@ -108,83 +162,86 @@ void TargetDialog::updateProcInfo(int i){
     QStandardItem *row_mcu = csvModel->item(i, 0);
     QString mcu = row_mcu->text();
 
-
-    for (Processor p : proccessorList){
-        if (QString::compare(p.getValue(KEY_MCU), mcu) == 0)
-        {
-            curProc = p;
-            break;
+    //searching proc name in list
+    QStringList keySeries = procSeriesList.keys();
+    QString foundSeria = "none";
+    for (QString ser : keySeries){
+        const QJsonObject &targets = procSeriesList.value(ser).toObject();
+        const QJsonArray &mcuArray = targets.value(JSON_KEY_MCU_LIST).toArray();
+        for (int i = 0; i < mcuArray.count(); i++){
+            const QJsonValue mcuName = mcuArray.at(i).toObject().value("MCU");
+            if (QString::compare(mcuName.toString(),mcu) == 0){
+                foundSeria = ser;
+                break;
+            }
         }
+        if (QString::compare(foundSeria,"none") != 0)
+            break;
     }
 
-    addLabel("F [MHz]:", curProc.getValue(KEY_FREQ));
-    addLabel(QString("%1 [C]:").arg(KEY_TMAX), curProc.getValue(KEY_TMAX));
-    addLabel(QString("%1 [C]:").arg(KEY_TMIN), curProc.getValue(KEY_TMIN));
-    addLabel(QString("%1 [V]:").arg(KEY_UMAX), curProc.getValue(KEY_UMAX));
-    addLabel(QString("%1 [V]:").arg(KEY_UMIN), curProc.getValue(KEY_UMIN));
-    addLabel(QString("%1:").arg(KEY_PINOUTS), curProc.getValue(KEY_PINOUTS));
-    addLabel(QString("%1:").arg(KEY_CORE), curProc.getValue(KEY_CORE));
-    addLabel(QString("%1 [ch, dig]:").arg(KEY_ADC), curProc.getValue(KEY_ADC), curProc.getValue(KEY_ADC_CH), curProc.getValue(KEY_ADC_DIG));
-    addLabel(QString("%1 [ch, dig]:").arg(KEY_DAC), curProc.getValue(KEY_DAC), curProc.getValue(KEY_DAC_CH), curProc.getValue(KEY_DAC_DIG));
-    addLabel(QString("%1:").arg(KEY_ETH_MAC), curProc.getValue(KEY_ETH_MAC));
-    addLabel(QString("%1:").arg(KEY_ETH_PHY), curProc.getValue(KEY_ETH_PHY));
+    //fill tree view
+    const QJsonObject &selectedSeria = procSeriesList.value(foundSeria).toObject();
 
-    addLabel(QString("%1:").arg(KEY_SPI), curProc.getValue(KEY_SPI));
-    addLabel(QString("%1:").arg(KEY_USART), curProc.getValue(KEY_USART));
-    addLabel(QString("%1:").arg(KEY_USB), curProc.getValue(KEY_USB));
-    addLabel(QString("%1:").arg(KEY_CAN), curProc.getValue(KEY_CAN));
-    addLabel(QString("%1:").arg(KEY_I2C), curProc.getValue(KEY_I2C));
-    addLabel(QString("%1:").arg(KEY_SDIO), curProc.getValue(KEY_SDIO));
-    addLabel(QString("%1:").arg(KEY_EBC), curProc.getValue(KEY_EBC));
-    addLabel(QString("%1:").arg(KEY_52070), curProc.getValue(KEY_52070));
-    addLabel(QString("%1:").arg(KEY_18977), curProc.getValue(KEY_18977));
-    addLabel(QString("%1:").arg(KEY_28147), curProc.getValue(KEY_28147));
-    addLabel(QString("%1:").arg(KEY_CACHE), curProc.getValue(KEY_CACHE));
-    addLabel(QString("%1:").arg(KEY_SPACE_WIRE), curProc.getValue(KEY_SPACE_WIRE));
-    addLabel(QString("%1:").arg(KEY_CCSDS), curProc.getValue(KEY_CCSDS));
-    addLabel(QString("%1:").arg(KEY_ECC), curProc.getValue(KEY_ECC));
-    addLabel(QString("%1:").arg(KEY_CRC), curProc.getValue(KEY_CRC));
+    for (QString key : selectedSeria.keys()){
 
-    addLabel(QString("%1:").arg(KEY_TIM), curProc.getValue(KEY_TIM));
-    addLabel(QString("%1:").arg(KEY_SYSTICK), curProc.getValue(KEY_SYSTICK));
-    addLabel(QString("%1:").arg(KEY_WDT), curProc.getValue(KEY_WDT));
-    addLabel(QString("%1:").arg(KEY_IWDT), curProc.getValue(KEY_IWDT));
-    addLabel(QString("%1:").arg(KEY_MPU), curProc.getValue(KEY_MPU));
-    addLabel(QString("%1:").arg(KEY_COMP), curProc.getValue(KEY_COMP));
-    addLabel(QString("%1:").arg(KEY_BKP), curProc.getValue(KEY_BKP));
-    addLabel(QString("%1:").arg(KEY_POWER), curProc.getValue(KEY_POWER));
-    addLabel(QString("%1:").arg(KEY_DMA), curProc.getValue(KEY_DMA));
+        if (QString::compare(JSON_KEY_MCU_LIST, key) == 0)
+            continue;
+
+        const QJsonValue &jsValue = selectedSeria.value(key);
+        if (jsValue.isString()){
+            addLabel(key, jsValue.toString());
+        }
+        else{
+            const QJsonObject &obj = jsValue.toObject();
+            addLabel(key, "");
+            for (QString key : obj.keys()){
+                const QJsonValue &v = obj.value(key);
+                if (v.isString())
+                    addLabel(key,v.toString());
+                else{
+                    addLabel(key, QString::number(v.toObject().keys().length()));
+                }
+            }
+        }
+    }
 
 }
 
 void TargetDialog::addLabel(QString key, QString value, QString subV1, QString subV2)
 {
     int h = 15;
+    QFont font;
+    font.setBold(true);
 
-    if (!value.isEmpty()){
-        QLabel *lKey = new QLabel(key);
-        lKey->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        lKey->setMaximumSize(100, h);
-        lKey->setMinimumSize(100, h);
-        QLabel *lValue = new QLabel();
-        lValue->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        lValue->setMaximumSize(150, h);
-        lValue->setMinimumSize(150, h);
+    QLabel *lKey = new QLabel(key);
+    lKey->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    lKey->setMaximumSize(100, h);
+    lKey->setMinimumSize(100, h);
+    lKey->setFont(font);
 
-        if (!subV1.isEmpty() || !subV2.isEmpty()){
-            value += " [ ";
-            if (!subV1.isEmpty())
-                value += subV1;
-            if (!subV2.isEmpty())
-                value += ", " + subV2;
-            value += " ]";
-        }
-        lValue->setText(value);
-
-        ui->gridLayout->addWidget(lKey, labelCounter, 0);
-        ui->gridLayout->addWidget(lValue, labelCounter, 1);
-        ++labelCounter;
+    if (value.isEmpty()){
+        font.setItalic(true);
+        font.setBold(false);
+        lKey->setFont(font);
     }
+    QLabel *lValue = new QLabel();
+    lValue->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    lValue->setMaximumSize(150, h);
+    lValue->setMinimumSize(150, h);
+
+    if (!subV1.isEmpty() || !subV2.isEmpty()){
+        value += " [ ";
+        if (!subV1.isEmpty())
+            value += subV1;
+        if (!subV2.isEmpty())
+            value += ", " + subV2;
+        value += " ]";
+    }
+    lValue->setText(value);
+
+    ui->gridLayout->addWidget(lKey, labelCounter, 0);
+    ui->gridLayout->addWidget(lValue, labelCounter, 1);
+    ++labelCounter;
 }
 
 Processor TargetDialog::getProccessor(){
@@ -204,9 +261,6 @@ void TargetDialog::on_comboTargets_currentTextChanged(const QString &arg1)
 
     if (QString::compare(arg1, "All") == 0)
         targets = "";
-    else {
-        targets = arg1.mid(1, arg1.length()-2);
-    }
 
     fillCsvModel(targets);
 }
