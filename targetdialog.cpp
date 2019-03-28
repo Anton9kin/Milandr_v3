@@ -10,6 +10,9 @@
 #include <QJsonArray>
 
 #define JSON_KEY_MCU_LIST   "MCU_list"
+#define JSON_KEY_MEMORY     "Memory [kb]"
+#define JSON_KEY_PINS       "Pins"
+#define JSON_KEY_PARAMS     "Parameters"
 
 TargetDialog::TargetDialog(QWidget *parent) :
     QDialog(parent),
@@ -60,6 +63,42 @@ TargetDialog::~TargetDialog()
     delete ui;
 }
 
+static void appendHeader(QStringList &header, QString key, const QJsonValue& value){
+    if (value.isString())
+        header.append(key);
+    else{
+        const QJsonObject &subVal = value.toObject();
+        QStringList sL = subVal.keys();
+        QString str = key;
+        str += "\n";
+        for (int i = 0; i < sL.length(); i++){
+            str += sL[i];
+            if ((i+1) < sL.length()){
+                str += "/";
+            }
+        }
+
+        header.append(str);
+    }
+}
+
+static void appendList(QList<QStandardItem*> &list, const QJsonValue &value){
+    if (value.isString())
+        list.append(new QStandardItem(value.toString()));
+    else{
+        const QJsonObject &subVal = value.toObject();
+        QStringList sL = subVal.keys();
+        QString str;
+        for (int i = 0; i < sL.length(); i++){
+            str += subVal.value(sL[i]).toString();
+            if ((i+1) < sL.length()){
+                str += "/";
+            }
+        }
+        list.append(new QStandardItem(str));
+    }
+}
+
 void TargetDialog::fillCsvModel(QString targets)
 {
     csvModel->clear();
@@ -68,25 +107,14 @@ void TargetDialog::fillCsvModel(QString targets)
     const QJsonObject &seria = procSeriesList.value(procSeriesList.keys().at(0)).toObject();
     const QJsonObject &mcu = seria.value(JSON_KEY_MCU_LIST).toArray().at(0).toObject();
 
+    //get data from MCU_list
     for (QString key : mcu.keys()){
-        const QJsonValue &val = mcu.value(key);
-        if (val.isString())
-            headerModel.append(key);
-        else{
-            const QJsonObject &subVal = val.toObject();
-            QStringList sL = subVal.keys();
-            QString str = key;
-            str += "\n";
-            for (int i = 0; i < sL.length(); i++){
-                str += sL[i];
-                if ((i+1) < sL.length()){
-                    str += "/";
-                }
-            }
-
-            headerModel.append(str);
-        }
+        appendHeader(headerModel, key, mcu.value(key));
     }
+
+    //add pins and memory
+    appendHeader(headerModel, JSON_KEY_PINS, seria.value(JSON_KEY_PARAMS).toObject().value(JSON_KEY_PINS));
+    appendHeader(headerModel, JSON_KEY_MEMORY, seria.value(JSON_KEY_PARAMS).toObject().value(JSON_KEY_MEMORY));
 
     csvModel->setHorizontalHeaderLabels(headerModel);
 
@@ -117,25 +145,17 @@ void TargetDialog::fillCsvModel(QString targets)
             QList<QStandardItem *> standartList;
 
             for (QString headKey : mcu.keys()){
-                const QJsonValue &val = mcu.value(headKey);
-                if (val.isString())
-                    standartList.append(new QStandardItem(val.toString()));
-                else{
-                    const QJsonObject &subVal = val.toObject();
-                    QStringList sL = subVal.keys();
-                    QString str;
-                    for (int i = 0; i < sL.length(); i++){
-                        str += subVal.value(sL[i]).toString();
-                        if ((i+1) < sL.length()){
-                            str += "/";
-                        }
-                    }
-                    standartList.append(new QStandardItem(str));
-                }
+                appendList(standartList, mcu.value(headKey));
             }
+
+            //add pins and memory
+            appendList(standartList, obj.value(JSON_KEY_PARAMS).toObject().value(JSON_KEY_PINS));
+            appendList(standartList, obj.value(JSON_KEY_PARAMS).toObject().value(JSON_KEY_MEMORY));
+
             csvModel->insertRow(csvModel->rowCount(), standartList);
         }
     }
+
 
     if (csvModel->rowCount() != 0){
         ui->tableView->selectRow(0);
@@ -194,6 +214,12 @@ void TargetDialog::updateProcInfo(int i){
             const QJsonObject &obj = jsValue.toObject();
             addLabel(key, "");
             for (QString key : obj.keys()){
+
+                if ((QString::compare(key, JSON_KEY_MEMORY) == 0) ||
+                        (QString::compare(key, JSON_KEY_PINS) == 0)){
+                    continue;
+                }
+
                 const QJsonValue &v = obj.value(key);
                 if (v.isString())
                     addLabel(key,v.toString());
