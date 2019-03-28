@@ -158,9 +158,8 @@ void TargetDialog::updateProcInfo(int i){
         delete item;
     }
 
-    //QList<QStandardItem*> row = csvModel->item(i, 0);
     QStandardItem *row_mcu = csvModel->item(i, 0);
-    QString mcu = row_mcu->text();
+    selectedMCU = row_mcu->text();
 
     //searching proc name in list
     QStringList keySeries = procSeriesList.keys();
@@ -170,7 +169,7 @@ void TargetDialog::updateProcInfo(int i){
         const QJsonArray &mcuArray = targets.value(JSON_KEY_MCU_LIST).toArray();
         for (int i = 0; i < mcuArray.count(); i++){
             const QJsonValue mcuName = mcuArray.at(i).toObject().value("MCU");
-            if (QString::compare(mcuName.toString(),mcu) == 0){
+            if (QString::compare(mcuName.toString(),selectedMCU) == 0){
                 foundSeria = ser;
                 break;
             }
@@ -180,7 +179,7 @@ void TargetDialog::updateProcInfo(int i){
     }
 
     //fill tree view
-    const QJsonObject &selectedSeria = procSeriesList.value(foundSeria).toObject();
+    selectedSeria = procSeriesList.value(foundSeria).toObject();
 
     for (QString key : selectedSeria.keys()){
 
@@ -245,7 +244,27 @@ void TargetDialog::addLabel(QString key, QString value, QString subV1, QString s
 }
 
 Processor TargetDialog::getProccessor(){
-    return curProc;
+
+    Processor mcu;
+
+    for (QString key : selectedSeria.keys()){
+        if (QString::compare(key, "MCU_list") == 0)
+            continue;
+
+        mcu.insert(key, selectedSeria.value(key));
+    }
+
+    const QJsonArray &mcuList = selectedSeria.value("MCU_list").toArray();
+    for (int i = 0; i < mcuList.count(); i++){
+        const QJsonObject& obj = mcuList.at(i).toObject();
+        QString name = obj.value("MCU").toString();
+        if (QString::compare(name, selectedMCU) == 0){
+            mcu.insert("MCU_list", obj);
+            break;
+        }
+    }
+
+    return mcu;
 }
 
 void TargetDialog::on_tableView_doubleClicked(const QModelIndex &index)

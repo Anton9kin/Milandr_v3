@@ -1,13 +1,11 @@
 #ifndef TARGETDIALOG_H
 #define TARGETDIALOG_H
 
-#include "classes/processor.h"
-
 #include <QDialog>
 #include <QStandardItemModel>
 #include <QVector>
 #include <QJsonObject>
-
+#include "classes/processor.h"
 
 namespace Ui {
 class TargetDialog;
@@ -41,7 +39,8 @@ private:
     Ui::TargetDialog *ui;
     QStandardItemModel *csvModel;
     QJsonObject procSeriesList;
-    Processor curProc;
+    QJsonObject selectedSeria;
+    QString selectedMCU;
 };
 
 #endif // TARGETDIALOG_H
