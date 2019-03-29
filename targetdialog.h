@@ -20,7 +20,7 @@ public:
     ~TargetDialog();
 
 private:
-    void fillCsvModel(QString targets = "");
+    void fillCsvModel();
     void updateProcInfo(int );
     void addLabel(QString key, QString value, QString subV1 = "", QString subV2 = "");
 
@@ -34,6 +34,8 @@ private slots:
 
     void on_comboTargets_currentTextChanged(const QString &arg1);
 
+    void on_comboPackage_currentIndexChanged(const QString &arg1);
+
 private:
     int labelCounter;
     Ui::TargetDialog *ui;
@@ -41,6 +43,9 @@ private:
     QJsonObject procSeriesList;
     QJsonObject selectedSeria;
     QString selectedMCU;
+    QString selectTarget;
+    QString selectPackage;
+
 };
 
 #endif // TARGETDIALOG_H

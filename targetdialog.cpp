@@ -13,6 +13,8 @@
 #define JSON_KEY_MEMORY     "Memory [kb]"
 #define JSON_KEY_PINS       "Pins"
 #define JSON_KEY_PARAMS     "Parameters"
+#define JSON_KEY_PACKAGE    "Package"
+
 
 TargetDialog::TargetDialog(QWidget *parent) :
     QDialog(parent),
@@ -21,14 +23,30 @@ TargetDialog::TargetDialog(QWidget *parent) :
     ui->setupUi(this);
 
     labelCounter = 0;
-
+    selectTarget = selectPackage = "";
     //create model
     csvModel = new QStandardItemModel(this);
     ui->tableView->setModel(csvModel);
 
     procSeriesList = Utils::getProcessorFromJson(":/data/info.json");
 
+    //set data to comboTarget
     ui->comboTargets->addItems(procSeriesList.keys());
+
+    //set data to comboPackage
+    {
+        QStringList packList;
+        for (QString keyS : procSeriesList.keys()){
+            const QJsonArray &mcuList = procSeriesList.value(keyS).toObject().value(JSON_KEY_MCU_LIST).toArray();
+            for (int i = 0; i < mcuList.count(); i++){
+                QString package = mcuList.at(i).toObject().value(JSON_KEY_PACKAGE).toString();
+                if (!packList.contains(package) && (QString::compare(package, "none")!=0))
+                    packList.append(package);
+            }
+        }
+        ui->comboPackage->addItems(packList);
+        ui->comboPackage->addItem("none");
+    }
 
     //set model content
     fillCsvModel();
@@ -99,7 +117,7 @@ static void appendList(QList<QStandardItem*> &list, const QJsonValue &value){
     }
 }
 
-void TargetDialog::fillCsvModel(QString targets)
+void TargetDialog::fillCsvModel()
 {
     csvModel->clear();
     //set model header
@@ -107,7 +125,7 @@ void TargetDialog::fillCsvModel(QString targets)
     const QJsonObject &seria = procSeriesList.value(procSeriesList.keys().at(0)).toObject();
     const QJsonObject &mcu = seria.value(JSON_KEY_MCU_LIST).toArray().at(0).toObject();
 
-    //get data from MCU_list
+    //get headet data from MCU_list and append it to table header
     for (QString key : mcu.keys()){
         appendHeader(headerModel, key, mcu.value(key));
     }
@@ -125,12 +143,12 @@ void TargetDialog::fillCsvModel(QString targets)
         delete item;
     }
 
-    //define list of series
+    //filter by series
     QStringList list;
-    if (targets.isEmpty())
+    if (selectTarget.isEmpty())
         list = procSeriesList.keys();
     else
-        list.append(targets);
+        list.append(selectTarget);
 
     for (QString seria : list){
         //take seria
@@ -143,6 +161,11 @@ void TargetDialog::fillCsvModel(QString targets)
 
             const QJsonObject &mcu = mcuList.at(i).toObject();
             QList<QStandardItem *> standartList;
+
+            //filter by package
+            if (!selectPackage.isEmpty() && QString::compare(mcu.value(JSON_KEY_PACKAGE).toString(),selectPackage)){
+                continue;
+            }
 
             for (QString headKey : mcu.keys()){
                 appendList(standartList, mcu.value(headKey));
@@ -302,10 +325,20 @@ void TargetDialog::on_tableView_doubleClicked(const QModelIndex &index)
 
 void TargetDialog::on_comboTargets_currentTextChanged(const QString &arg1)
 {
-    QString targets = arg1;
+    selectTarget = arg1;
 
     if (QString::compare(arg1, "All") == 0)
-        targets = "";
+        selectTarget = "";
 
-    fillCsvModel(targets);
+    fillCsvModel();
+}
+
+void TargetDialog::on_comboPackage_currentIndexChanged(const QString &arg1)
+{
+    selectPackage = arg1;
+
+    if (QString::compare(arg1, "All") == 0)
+        selectPackage = "";
+
+    fillCsvModel();
 }
