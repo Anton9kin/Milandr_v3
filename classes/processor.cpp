@@ -20,14 +20,25 @@ static void fillItem (QStandardItem *parent, QString key, const QJsonValue &valu
             if (sValue.isString()){
                 int num = sValue.toString().toInt();
                 for (int i = 0; i < num; i++){
-                    auto *ssChild = new QStandardItem(QString("%1%2").arg(sKey).arg(i));
+                    auto *ssChild = new QStandardItem();
+                    if (num == 1)
+                        ssChild->setText(QString("%1").arg(sKey));
+                    else
+                        ssChild->setText(QString("%1%2").arg(sKey).arg(i));
+
                     ssChild->setCheckable(checkable);
                     sChild->appendRow(ssChild);
                 }
             }
             else{
-                for (QString ssKey : sValue.toObject().keys()){
-                    auto *ssChild = new QStandardItem(QString("%1%2").arg(sKey).arg(ssKey));
+                QStringList sValueKeysList = sValue.toObject().keys();
+                for (QString ssKey : sValueKeysList){
+                    auto *ssChild = new QStandardItem();
+                    if (sValueKeysList.length() == 1)
+                        ssChild->setText(QString("%1").arg(sKey));
+                    else
+                        ssChild->setText(QString("%1%2").arg(sKey).arg(ssKey));
+
                     ssChild->setCheckable(checkable);
                     sChild->appendRow(ssChild);
                 }

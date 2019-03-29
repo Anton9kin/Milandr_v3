@@ -24,6 +24,7 @@ TargetDialog::TargetDialog(QWidget *parent) :
 
     labelCounter = 0;
     selectTarget = selectPackage = "";
+
     //create model
     csvModel = new QStandardItemModel(this);
     ui->tableView->setModel(csvModel);

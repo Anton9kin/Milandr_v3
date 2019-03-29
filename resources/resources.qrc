@@ -28,4 +28,7 @@
         <file>p_Н14.42-1В.png</file>
         <file>p_Н16.48-1В.png</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>logo_Milandr.jpg</file>
+    </qresource>
 </RCC>
