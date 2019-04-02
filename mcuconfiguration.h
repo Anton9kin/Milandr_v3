@@ -7,6 +7,7 @@
 
 #include "classes/processor.h"
 #include "classes/ui/configbutton.h"
+#include "widgets/pinouts.h"
 
 namespace Ui {
 class MCUConfiguration;
@@ -30,6 +31,8 @@ public:
 
 private:
     Ui::MCUConfiguration *ui;
+    PinOuts pinWidget;
+
     QStandardItemModel treeModel;
     Processor MCU;
     QVector<QString> listConfigButton;

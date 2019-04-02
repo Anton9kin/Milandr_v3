@@ -12,6 +12,7 @@ MCUConfiguration::MCUConfiguration(QWidget *parent) :
     ui->setupUi(this);
     connect(&treeModel, SIGNAL(itemChanged(QStandardItem*)), SLOT(onItemChanged(QStandardItem*)));
     ui->widget->setLayout(&grid);
+    ui->tabWidget->addTab(&pinWidget, "PinWindget");
 }
 
 MCUConfiguration::~MCUConfiguration()
