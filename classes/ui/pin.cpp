@@ -20,23 +20,30 @@ Pin::Pin(const QString &text, Pin::Pin_Orientation orient)
 
 QRectF Pin::boundingRect() const
 {
-    return QRectF(this->x(),this->y(),60,20);
+    return QRectF(0,0,w,h);
 }
 
-void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
     QRectF rect = boundingRect();
     QBrush brush(color);
     QPointF T;
-    qreal angle = 0;
+    QMatrix matrix;
 
+    //set orientation
     switch(orientation){
-    case Pin_Horizontal: angle = 0; break;
-    case Pin_Vertical: angle = 90; break;
-    case Pin_Diagonal_NWSE: angle = 45; break;
-    case Pin_Diagonal_SWNE: angle = -45; break;
+    case Pin_Horizontal: matrix.rotate(0); break;
+    case Pin_Vertical_NS: matrix.rotate(90); break;
+    case Pin_Vertical_SN: matrix.rotate(-90); break;
+    case Pin_Diagonal_NWSE: matrix.rotate(45); break;
+    case Pin_Diagonal_SWNE: matrix.rotate(-45); break;
     }
+    this->setMatrix(matrix);
 
+    //for debug - change color then pressing
     if (Pressed){
         brush.setColor(Qt::red);
     }
@@ -44,7 +51,7 @@ void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
         brush.setColor(color);
     }
 
-    painter->rotate(angle);
+    //draw pin
     painter->fillRect(rect,brush);
     T.setX(rect.x() + 5);
     T.setY(rect.y() + 15);
@@ -71,16 +78,26 @@ void Pin::setOrientation(Pin::Pin_Orientation o)
     update();
 }
 
+int Pin::width()
+{
+    return this->w;
+}
+
+int Pin::height()
+{
+    return this->h;
+}
+
 void Pin::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Pressed = true;
     update();
-    QGraphicsItem::mousePressEvent(event);
+    Q_UNUSED(event);
 }
 
 void Pin::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Pressed = false;
     update();
-    QGraphicsItem::mouseReleaseEvent(event);
+    Q_UNUSED(event);
 }
