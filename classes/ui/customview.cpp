@@ -22,16 +22,16 @@ void CustomView::draw()
     Package *pack = new Package;
     scene->addItem(pack);
 
-    auto *p01 = new Pin("P01", Pin::Pin_Horizontal);
-    p01->setPos(-p01->width(), hPack/2 - p01->height()/2);
+    auto *p01 = new Pin("P01", Utils::View_Horizontal);
+    auto *p02 = new Pin("P02", Utils::View_Vertical_SN);
+    auto *p03 = new Pin("P03", Utils::View_Horizontal);
+    auto *p04 = new Pin("P04", Utils::View_Vertical_NS);
 
-    auto *p02 = new Pin("P02", Pin::Pin_Vertical_SN);
+    p01->setPos(-p01->width(), hPack/2 - p01->height()/2);
     p02->setPos(hPack/2 - p02->height()/2, 0);
 
-    auto *p03 = new Pin("P03", Pin::Pin_Horizontal);
     p03->setPos(hPack, hPack/2 - p03->height()/2);
 
-    auto *p04 = new Pin("P04", Pin::Pin_Vertical_NS);
     p04->setPos(hPack/2 + p04->height()/2, hPack);
 
     listPins.append(p01);

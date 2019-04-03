@@ -4,25 +4,20 @@
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QtGui>
+#include "../../utils/utils.h"
 
 class Pin : public QGraphicsItem
 {
 public:
-    enum Pin_Orientation{
-        Pin_Horizontal,     //horizontal    (text from west to east)
-        Pin_Vertical_NS,    //vertical      (text from north to south)
-        Pin_Vertical_SN,    //vertical      (text from south to north)
-        Pin_Diagonal_SWNE,  //diagonal      (text from south-west to north-east)
-        Pin_Diagonal_NWSE,  //diagonal      (text from north-west to south-east)
-    };
 
-    Pin(const QString &text = "", Pin_Orientation orient = Pin_Horizontal);
+
+    Pin(const QString &text = "", Utils::View_Orientation orient = Utils::View_Horizontal);
 
     bool Pressed;
 
     void setColor(Qt::GlobalColor color);
     void setText(const QString &t);
-    void setOrientation(Pin_Orientation o);
+    void setOrientation(Utils::View_Orientation o);
     int width();
     int height();
 
@@ -36,7 +31,7 @@ private:
     const int w = 60;
     const int h = 20;
     QString text;
-    Pin_Orientation orientation;
+    Utils::View_Orientation orientation;
     Qt::GlobalColor color;
 };
 

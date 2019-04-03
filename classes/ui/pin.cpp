@@ -10,7 +10,7 @@
  *          - Rotate - painter->rotate(), after that you have to paint something
  */
 
-Pin::Pin(const QString &text, Pin::Pin_Orientation orient)
+Pin::Pin(const QString &text, Utils::View_Orientation orient)
 {
     Pressed = false;
     this->text = text;
@@ -35,11 +35,11 @@ void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
 
     //set orientation
     switch(orientation){
-    case Pin_Horizontal: matrix.rotate(0); break;
-    case Pin_Vertical_NS: matrix.rotate(90); break;
-    case Pin_Vertical_SN: matrix.rotate(-90); break;
-    case Pin_Diagonal_NWSE: matrix.rotate(45); break;
-    case Pin_Diagonal_SWNE: matrix.rotate(-45); break;
+    case Utils::View_Horizontal: matrix.rotate(0); break;
+    case Utils::View_Vertical_NS: matrix.rotate(90); break;
+    case Utils::View_Vertical_SN: matrix.rotate(-90); break;
+    case Utils::View_Diagonal_NWSE: matrix.rotate(45); break;
+    case Utils::View_Diagonal_SWNE: matrix.rotate(-45); break;
     }
     this->setMatrix(matrix);
 
@@ -72,7 +72,7 @@ void Pin::setText(const QString &t)
     update();
 }
 
-void Pin::setOrientation(Pin::Pin_Orientation o)
+void Pin::setOrientation(Utils::View_Orientation o)
 {
     this->orientation = o;
     update();
