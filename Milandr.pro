@@ -35,7 +35,8 @@ SOURCES += \
     aboutdialog.cpp \
     classes/ui/customview.cpp \
     widgets/pinouts.cpp \
-    classes/ui/pin.cpp
+    classes/ui/pin.cpp \
+    classes/ui/package.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,7 +48,8 @@ HEADERS += \
     aboutdialog.h \
     classes/ui/customview.h \
     widgets/pinouts.h \
-    classes/ui/pin.h
+    classes/ui/pin.h \
+    classes/ui/package.h
 
 FORMS += \
         mainwindow.ui \

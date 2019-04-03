@@ -49,7 +49,7 @@ void MainWindow::on_btn_New_clicked()
         MCUConfig.setMCU(targetDialog.getProccessor());
 
         ui->stackedWidget->setCurrentWidget(&MCUConfig);
-        this->setGeometry(this->x()-ADD_WIDTH/2, this->y()-ADD_HEIGHT/2, this->width()+ADD_WIDTH, this->height()+ADD_HEIGHT);
+        //this->setGeometry(this->x()-ADD_WIDTH/2, this->y()-ADD_HEIGHT/2, this->width()+ADD_WIDTH, this->height()+ADD_HEIGHT);
     }
 }
 

@@ -17,12 +17,8 @@ public:
     explicit PinOuts(QWidget *parent = nullptr);
     ~PinOuts();
 
-    void draw();
-
 private:
     Ui::PinOuts *ui;
-    QGraphicsScene *scene;
-    QList<Pin*> listPins;
 };
 
 #endif // PINOUTS_H

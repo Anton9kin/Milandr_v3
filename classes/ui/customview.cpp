@@ -4,12 +4,52 @@
 #include <QWheelEvent>
 #include <math.h>
 
-#include "pin.h"
+#include "package.h"
 
 CustomView::CustomView(QWidget *parent)
     : QGraphicsView(parent)
 {
+    scene = new QGraphicsScene(this);
+    setScene(scene);
+}
 
+void CustomView::draw()
+{
+    clear();
+
+    qreal hPack = 200;
+
+    Package *pack = new Package;
+    scene->addItem(pack);
+
+    auto *p01 = new Pin("P01", Pin::Pin_Horizontal);
+    p01->setPos(-p01->width(), hPack/2 - p01->height()/2);
+
+    auto *p02 = new Pin("P02", Pin::Pin_Vertical_SN);
+    p02->setPos(hPack/2 - p02->height()/2, 0);
+
+    auto *p03 = new Pin("P03", Pin::Pin_Horizontal);
+    p03->setPos(hPack, hPack/2 - p03->height()/2);
+
+    auto *p04 = new Pin("P04", Pin::Pin_Vertical_NS);
+    p04->setPos(hPack/2 + p04->height()/2, hPack);
+
+    listPins.append(p01);
+    listPins.append(p02);
+    listPins.append(p03);
+    listPins.append(p04);
+
+    for(int i =0; i < listPins.size(); i++){
+        scene->addItem(listPins.at(i));
+    }
+}
+
+void CustomView::clear()
+{
+    while (!listPins.isEmpty()) {
+        Pin *pin = listPins.first();
+        delete pin;
+    }
 }
 
 
@@ -30,8 +70,4 @@ void CustomView::scaleView(qreal scaleFactor){
     scale(scaleFactor, scaleFactor);
 }
 
-void CustomView::mousePressEvent(QMouseEvent *event)
-{
-    QGraphicsView::mousePressEvent(event);
-}
 

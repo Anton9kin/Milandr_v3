@@ -2,6 +2,7 @@
 #define CUSTOMVIEW_H
 
 #include <QGraphicsView>
+#include "pin.h"
 
 class CustomView : public QGraphicsView
 {
@@ -9,11 +10,16 @@ class CustomView : public QGraphicsView
 
 public:
     CustomView(QWidget *parent = nullptr);
+    void draw();
+    void clear();
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
     void scaleView(qreal scaleFactor);
-    void mousePressEvent(QMouseEvent *event) override;
+
+private:
+    QGraphicsScene *scene;
+    QList<Pin*> listPins;
 };
 
 #endif // CUSTOMVIEW_H
