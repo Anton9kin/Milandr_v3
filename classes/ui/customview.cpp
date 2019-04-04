@@ -4,7 +4,7 @@
 #include <QWheelEvent>
 #include <math.h>
 
-#include "package.h"
+#include "package_h16_48_1b.h"
 
 CustomView::CustomView(QWidget *parent)
     : QGraphicsView(parent)
@@ -13,31 +13,17 @@ CustomView::CustomView(QWidget *parent)
     setScene(scene);
 }
 
-void CustomView::draw()
+void CustomView::draw(Processor *mcu)
 {
     clear();
 
-    qreal hPack = 200;
-
-    Package *pack = new Package;
+    auto *pack = new Package_H16_48_1B(mcu);
     scene->addItem(pack);
 
-    auto *p01 = new Pin("P01", Utils::View_Horizontal);
-    auto *p02 = new Pin("P02", Utils::View_Vertical_SN);
-    auto *p03 = new Pin("P03", Utils::View_Horizontal);
-    auto *p04 = new Pin("P04", Utils::View_Vertical_NS);
-
-    p01->setPos(-p01->width(), hPack/2 - p01->height()/2);
-    p02->setPos(hPack/2 - p02->height()/2, 0);
-
-    p03->setPos(hPack, hPack/2 - p03->height()/2);
-
-    p04->setPos(hPack/2 + p04->height()/2, hPack);
-
-    listPins.append(p01);
-    listPins.append(p02);
-    listPins.append(p03);
-    listPins.append(p04);
+    for (int i = 0; i < 48; i++){
+        auto *p = new Pin(QString("P%1").arg(i+1,2,10, QChar('0')), pack->getPinOrientation(i+1), pack->getPinPos(i+1));
+        listPins.append(p);
+    }
 
     for(int i =0; i < listPins.size(); i++){
         scene->addItem(listPins.at(i));
@@ -46,10 +32,7 @@ void CustomView::draw()
 
 void CustomView::clear()
 {
-    while (!listPins.isEmpty()) {
-        Pin *pin = listPins.first();
-        delete pin;
-    }
+    listPins.clear();
 }
 
 

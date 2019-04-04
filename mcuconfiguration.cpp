@@ -20,10 +20,12 @@ MCUConfiguration::~MCUConfiguration()
     delete ui;
 }
 
-void MCUConfiguration::setMCU(const Processor &mcu)
+void MCUConfiguration::setMCU(Processor mcu)
 {
-    //set current model
+    //set current MCU
     this->MCU = mcu;
+    //give mcu to package
+    pinWidget.setMCU(&mcu);
     //set left tree view
     setTreeContent();
 }

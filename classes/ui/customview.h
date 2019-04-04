@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include "pin.h"
+#include "../processor.h"
 
 class CustomView : public QGraphicsView
 {
@@ -10,7 +11,7 @@ class CustomView : public QGraphicsView
 
 public:
     CustomView(QWidget *parent = nullptr);
-    void draw();
+    void draw(Processor *mcu = nullptr);
     void clear();
 
 protected:

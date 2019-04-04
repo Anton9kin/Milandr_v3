@@ -27,7 +27,7 @@ public:
     explicit MCUConfiguration(QWidget *parent = nullptr);
     ~MCUConfiguration();
 
-    void setMCU(const Processor &mcu);
+    void setMCU(Processor mcu);
 
 private:
     Ui::MCUConfiguration *ui;

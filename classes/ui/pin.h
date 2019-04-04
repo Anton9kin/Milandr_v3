@@ -11,7 +11,7 @@ class Pin : public QGraphicsItem
 public:
 
 
-    Pin(const QString &text = "", Utils::View_Orientation orient = Utils::View_Horizontal);
+    Pin(const QString &text = "", Utils::View_Orientation orient = Utils::View_Horizontal, QPointF pos = QPointF(0,0));
 
     bool Pressed;
 
@@ -28,7 +28,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    const int w = 60;
+    const int w = 50;
     const int h = 20;
     QString text;
     Utils::View_Orientation orientation;

@@ -67,7 +67,7 @@ void Processor::Model(QStandardItemModel& model)
     model.clear();
     //set: Name
     auto* parent = new QStandardItem();
-    parent->setText(data.value("MCU_list").toObject().value("MCU").toString());
+    parent->setText(Name());
 
     for (QString key : data.keys()){
         if ((QString::compare(key, "Interfaces") == 0) ||
@@ -85,4 +85,10 @@ void Processor::insert(QString key, QJsonValue value)
 {
     data.insert(key, value);
 }
+
+QString Processor::Name()
+{
+    return data.value("MCU_list").toObject().value("MCU").toString();
+}
+
 

@@ -19,6 +19,8 @@ public:
     void Model(QStandardItemModel& model);
 
     void insert(QString key, QJsonValue value);
+
+    QString Name();
 private:
 };
 

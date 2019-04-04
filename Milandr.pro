@@ -36,7 +36,8 @@ SOURCES += \
     classes/ui/customview.cpp \
     widgets/pinouts.cpp \
     classes/ui/pin.cpp \
-    classes/ui/package.cpp
+    classes/ui/package.cpp \
+    classes/ui/package_h16_48_1b.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -49,7 +50,8 @@ HEADERS += \
     classes/ui/customview.h \
     widgets/pinouts.h \
     classes/ui/pin.h \
-    classes/ui/package.h
+    classes/ui/package.h \
+    classes/ui/package_h16_48_1b.h
 
 FORMS += \
         mainwindow.ui \

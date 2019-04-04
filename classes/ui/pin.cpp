@@ -10,12 +10,13 @@
  *          - Rotate - painter->rotate(), after that you have to paint something
  */
 
-Pin::Pin(const QString &text, Utils::View_Orientation orient)
+Pin::Pin(const QString &text, Utils::View_Orientation orient, QPointF pos)
 {
     Pressed = false;
     this->text = text;
     this->orientation = orient;
     this->color = Qt::gray;
+    this->setPos(pos);
 }
 
 QRectF Pin::boundingRect() const
@@ -29,6 +30,8 @@ void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
     Q_UNUSED(widget);
 
     QRectF rect = boundingRect();
+    painter->eraseRect(rect);
+
     QBrush brush(color);
     QPointF T;
     QMatrix matrix;
