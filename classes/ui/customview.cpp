@@ -17,17 +17,16 @@ void CustomView::draw(Processor *mcu)
 {
     clear();
 
-    auto *pack = new Package_H16_48_1B(mcu);
-    scene->addItem(pack);
+    if (mcu == nullptr)
+        return;
 
-    for (int i = 0; i < 48; i++){
-        auto *p = new Pin(QString("P%1").arg(i+1,2,10, QChar('0')), pack->getPinOrientation(i+1), pack->getPinPos(i+1));
-        listPins.append(p);
+    if (QString::compare("Н16.48-1В", mcu->Package()) == 0)
+        drawPackage_H16_48(mcu);
+    else{
+        auto *pack = new Package();
+        scene->addItem(pack);
     }
 
-    for(int i =0; i < listPins.size(); i++){
-        scene->addItem(listPins.at(i));
-    }
 }
 
 void CustomView::clear()
@@ -51,6 +50,21 @@ void CustomView::scaleView(qreal scaleFactor){
         return;
 
     scale(scaleFactor, scaleFactor);
+}
+
+void CustomView::drawPackage_H16_48(Processor *mcu)
+{
+    auto *pack = new Package_H16_48_1B(mcu);
+    scene->addItem(pack);
+
+    for (int i = 0; i < 48; i++){
+        auto *p = new Pin(QString("P%1").arg(i+1,2,10, QChar('0')), pack->getPinOrientation(i+1), pack->getPinPos(i+1));
+        listPins.append(p);
+    }
+
+    for(int i =0; i < listPins.size(); i++){
+        scene->addItem(listPins.at(i));
+    }
 }
 
 

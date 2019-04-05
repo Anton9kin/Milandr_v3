@@ -21,6 +21,7 @@ public:
     void insert(QString key, QJsonValue value);
 
     QString Name();
+    QString Package();
 private:
 };
 

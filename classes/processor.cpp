@@ -91,4 +91,9 @@ QString Processor::Name()
     return data.value("MCU_list").toObject().value("MCU").toString();
 }
 
+QString Processor::Package()
+{
+    return data.value("MCU_list").toObject().value("Package").toString();
+}
+
 

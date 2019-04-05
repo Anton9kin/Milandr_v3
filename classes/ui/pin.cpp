@@ -1,5 +1,5 @@
 #include "pin.h"
-
+#include <QMenu>
 /**
  * @brief Pin::Pin
  *
@@ -10,13 +10,18 @@
  *          - Rotate - painter->rotate(), after that you have to paint something
  */
 
+#define COLOR_DEFAULT   Qt::lightGray
+#define COLOR_SELECTED   Qt::green
+#define COLOR_SIMPLE   Qt::yellow
+
 Pin::Pin(const QString &text, Utils::View_Orientation orient, QPointF pos)
 {
     Pressed = false;
     this->text = text;
     this->orientation = orient;
-    this->color = Qt::gray;
+    this->color = COLOR_DEFAULT;
     this->setPos(pos);
+    valueList.append("Reset");
 }
 
 QRectF Pin::boundingRect() const
@@ -63,12 +68,6 @@ void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
 
 }
 
-void Pin::setColor(Qt::GlobalColor color)
-{
-    this->color = color;
-    update();
-}
-
 void Pin::setText(const QString &t)
 {
     this->text = t;
@@ -79,6 +78,16 @@ void Pin::setOrientation(Utils::View_Orientation o)
 {
     this->orientation = o;
     update();
+}
+
+void Pin::addToValueList(QString value)
+{
+    valueList.append(value);
+}
+
+void Pin::addToValueList(QList<QString> list)
+{
+    valueList.append(list);
 }
 
 int Pin::width()
@@ -103,4 +112,28 @@ void Pin::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     Pressed = false;
     update();
     Q_UNUSED(event);
+}
+
+void Pin::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    if (valueList.isEmpty())
+        return;
+
+    QMenu menu;
+    for (QString value : valueList)
+        menu.addAction(value);
+
+    QAction *act = menu.exec(event->screenPos());
+
+    if (act != nullptr){
+        if (QString::compare(act->text(), valueList.at(0)) == 0){
+            color = COLOR_DEFAULT;
+        }
+        else{
+            color = COLOR_SELECTED;
+            this->text = act->text();
+        }
+
+        update();
+    }
 }

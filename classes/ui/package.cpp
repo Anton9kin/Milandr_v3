@@ -28,7 +28,7 @@ void Package::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QRectF rect = boundingRect();
     painter->eraseRect(rect);
 
-    //set font and point for packahe and MCU names
+    //set font and point for package and MCU names
     QPointF T(w/3, h*2/3);
     QFont font;
     font.setBold(true);

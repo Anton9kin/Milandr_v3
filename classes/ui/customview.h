@@ -21,6 +21,9 @@ protected:
 private:
     QGraphicsScene *scene;
     QList<Pin*> listPins;
+
+
+    void drawPackage_H16_48(Processor *mcu = nullptr);
 };
 
 #endif // CUSTOMVIEW_H

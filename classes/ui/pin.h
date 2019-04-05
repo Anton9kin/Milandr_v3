@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QtGui>
+#include <QGraphicsSceneContextMenuEvent>
 #include "../../utils/utils.h"
 
 class Pin : public QGraphicsItem
@@ -15,9 +16,10 @@ public:
 
     bool Pressed;
 
-    void setColor(Qt::GlobalColor color);
     void setText(const QString &t);
     void setOrientation(Utils::View_Orientation o);
+    void addToValueList(QString value);
+    void addToValueList(QList<QString> list);
     int width();
     int height();
 
@@ -26,6 +28,7 @@ protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 private:
     const int w = 50;
@@ -33,6 +36,7 @@ private:
     QString text;
     Utils::View_Orientation orientation;
     Qt::GlobalColor color;
+    QList<QString> valueList;
 };
 
 #endif // PIN_H
