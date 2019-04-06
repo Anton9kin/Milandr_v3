@@ -81,7 +81,7 @@ void Package_H16_48_1B::setPoints()
         //right side
         else if (i < 30){
             p.setX(w); p.setY(h - 2*stepPin - ((i-18)%12)*stepPin);
-            pinOrientationList.append(Utils::View_Horizontal);
+            pinOrientationList.append(Utils::View_Horizontal_Right);
         }
         //top side
         else if (i < 42){

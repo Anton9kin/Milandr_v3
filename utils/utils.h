@@ -13,6 +13,7 @@ public:
 
     enum View_Orientation{
         View_Horizontal,     //horizontal    (text from west to east)
+        View_Horizontal_Right,     //horizontal to right   (text from west to east)
         View_Vertical_NS,    //vertical      (text from north to south)
         View_Vertical_SN,    //vertical      (text from south to north)
         View_Diagonal_SWNE,  //diagonal      (text from south-west to north-east)

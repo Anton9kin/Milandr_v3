@@ -18,7 +18,7 @@ public:
 
     void setText(const QString &t);
     void setOrientation(Utils::View_Orientation o);
-    void addToValueList(QString value);
+    void addToValueList(QString initText);
     void addToValueList(QList<QString> list);
     int width();
     int height();
@@ -34,6 +34,7 @@ private:
     const int w = 50;
     const int h = 20;
     QString text;
+    QString initText;
     Utils::View_Orientation orientation;
     Qt::GlobalColor color;
     QList<QString> valueList;

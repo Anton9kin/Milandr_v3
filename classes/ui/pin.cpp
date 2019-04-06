@@ -18,10 +18,10 @@ Pin::Pin(const QString &text, Utils::View_Orientation orient, QPointF pos)
 {
     Pressed = false;
     this->text = text;
+    this->initText = text;
     this->orientation = orient;
     this->color = COLOR_DEFAULT;
     this->setPos(pos);
-    valueList.append("Reset");
 }
 
 QRectF Pin::boundingRect() const
@@ -40,32 +40,54 @@ void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
     QBrush brush(color);
     QPointF T;
     QMatrix matrix;
-
-    //set orientation
-    switch(orientation){
-    case Utils::View_Horizontal: matrix.rotate(0); break;
-    case Utils::View_Vertical_NS: matrix.rotate(90); break;
-    case Utils::View_Vertical_SN: matrix.rotate(-90); break;
-    case Utils::View_Diagonal_NWSE: matrix.rotate(45); break;
-    case Utils::View_Diagonal_SWNE: matrix.rotate(-45); break;
-    }
-    this->setMatrix(matrix);
-
-    //for debug - change color then pressing
-    if (Pressed){
-        brush.setColor(Qt::red);
-    }
-    else {
-        brush.setColor(color);
-    }
+    QRectF Tv;
 
     //draw pin
+    //fill background and draw border
     painter->fillRect(rect,brush);
+    painter->drawRect(rect);
+    //set point and draw pin text
     T.setX(rect.x() + 5);
     T.setY(rect.y() + 15);
     painter->drawText(T,text);
-    painter->drawRect(rect);
+    //set point and draw value
 
+    //set orientation
+    switch(orientation){
+    case Utils::View_Horizontal:
+        matrix.rotate(0);
+        Tv.setX(rect.x()-w);
+        Tv.setY(rect.y());
+        break;
+    case Utils::View_Horizontal_Right:
+        matrix.rotate(0);
+        Tv.setX(rect.x()+w+5);
+        Tv.setY(rect.y());
+        break;
+    case Utils::View_Vertical_NS:
+        matrix.rotate(90);
+        Tv.setX(rect.x()+w+5);
+        Tv.setY(rect.y());
+        break;
+    case Utils::View_Vertical_SN:
+        matrix.rotate(-90);
+        Tv.setX(rect.x()+w+5);
+        Tv.setY(rect.y());
+        break;
+    case Utils::View_Diagonal_NWSE:
+        matrix.rotate(45);
+        break;
+    case Utils::View_Diagonal_SWNE:
+        matrix.rotate(-45);
+        break;
+    }
+
+    Tv.setWidth(w);
+    Tv.setHeight(h);
+    //painter->eraseRect(Tv);
+    //painter->drawText(Tv,text);
+
+    this->setMatrix(matrix);
 }
 
 void Pin::setText(const QString &t)
@@ -120,6 +142,7 @@ void Pin::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
         return;
 
     QMenu menu;
+    menu.setTitle(initText);
     for (QString value : valueList)
         menu.addAction(value);
 
@@ -128,6 +151,7 @@ void Pin::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     if (act != nullptr){
         if (QString::compare(act->text(), valueList.at(0)) == 0){
             color = COLOR_DEFAULT;
+            this->text = "";
         }
         else{
             color = COLOR_SELECTED;
