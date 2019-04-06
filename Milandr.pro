@@ -37,7 +37,8 @@ SOURCES += \
     widgets/pinouts.cpp \
     classes/ui/pin.cpp \
     classes/ui/package.cpp \
-    classes/ui/package_h16_48_1b.cpp
+    classes/ui/package_h16_48_1b.cpp \
+    classes/ui/package_lqfp48.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -51,7 +52,8 @@ HEADERS += \
     widgets/pinouts.h \
     classes/ui/pin.h \
     classes/ui/package.h \
-    classes/ui/package_h16_48_1b.h
+    classes/ui/package_h16_48_1b.h \
+    classes/ui/package_lqfp48.h
 
 FORMS += \
         mainwindow.ui \

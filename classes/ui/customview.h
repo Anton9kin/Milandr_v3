@@ -24,6 +24,8 @@ private:
 
 
     void drawPackage_H16_48(Processor *mcu = nullptr);
+    void drawPackage_LQFP48(Processor *mcu = nullptr);
+
 };
 
 #endif // CUSTOMVIEW_H

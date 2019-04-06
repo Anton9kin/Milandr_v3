@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "package_h16_48_1b.h"
+#include "package_lqfp48.h"
 
 CustomView::CustomView(QWidget *parent)
     : QGraphicsView(parent)
@@ -22,6 +23,8 @@ void CustomView::draw(Processor *mcu)
 
     if (QString::compare("Н16.48-1В", mcu->Package()) == 0)
         drawPackage_H16_48(mcu);
+    else if (QString::compare("LQFP48", mcu->Package()) == 0)
+        drawPackage_LQFP48(mcu);
     else{
         auto *pack = new Package();
         scene->addItem(pack);
@@ -67,4 +70,17 @@ void CustomView::drawPackage_H16_48(Processor *mcu)
     }
 }
 
+void CustomView::drawPackage_LQFP48(Processor *mcu){
+    auto *pack = new Package_LQFP48(mcu);
+    scene->addItem(pack);
+
+    for (int i = 0; i < 48; i++){
+        auto *p = new Pin(QString("P%1").arg(i+1,2,10, QChar('0')), pack->getPinOrientation(i+1), pack->getPinPos(i+1));
+        listPins.append(p);
+    }
+
+    for(int i =0; i < listPins.size(); i++){
+        scene->addItem(listPins.at(i));
+    }
+}
 
