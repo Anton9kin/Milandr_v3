@@ -38,7 +38,8 @@ SOURCES += \
     classes/ui/pin.cpp \
     classes/ui/package.cpp \
     classes/ui/package_h16_48_1b.cpp \
-    classes/ui/package_lqfp48.cpp
+    classes/ui/package_lqfp48.cpp \
+    classes/ui/package_h18_64_1b.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     classes/ui/pin.h \
     classes/ui/package.h \
     classes/ui/package_h16_48_1b.h \
-    classes/ui/package_lqfp48.h
+    classes/ui/package_lqfp48.h \
+    classes/ui/package_h18_64_1b.h
 
 FORMS += \
         mainwindow.ui \

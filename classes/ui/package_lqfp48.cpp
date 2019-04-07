@@ -51,7 +51,8 @@ void Package_LQFP48::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
         }
         painter->drawText(p, QString("%1").arg(i+1));
         if (i == 0){
-            painter->drawEllipse(static_cast<int>(p.x() + 15), static_cast<int>(p.y() - 7), 5, 5);
+            QRectF pointFirstPin(p.x()+15, p.y() - 7, 5, 5);
+            painter->drawEllipse(pointFirstPin);
         }
     }
 }

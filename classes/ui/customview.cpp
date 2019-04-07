@@ -6,6 +6,7 @@
 
 #include "package_h16_48_1b.h"
 #include "package_lqfp48.h"
+#include "package_h18_64_1b.h"
 
 CustomView::CustomView(QWidget *parent)
     : QGraphicsView(parent)
@@ -23,6 +24,8 @@ void CustomView::draw(Processor *mcu)
 
     if (QString::compare("Н16.48-1В", mcu->Package()) == 0)
         drawPackage_H16_48(mcu);
+    else if (QString::compare("Н18.64-1В", mcu->Package()) == 0)
+        drawPackage_H18_64(mcu);
     else if (QString::compare("LQFP48", mcu->Package()) == 0)
         drawPackage_LQFP48(mcu);
     else{
@@ -35,6 +38,7 @@ void CustomView::draw(Processor *mcu)
 void CustomView::clear()
 {
     listPins.clear();
+    scene->clear();
 }
 
 
@@ -84,3 +88,16 @@ void CustomView::drawPackage_LQFP48(Processor *mcu){
     }
 }
 
+void CustomView::drawPackage_H18_64(Processor *mcu){
+    auto *pack = new Package_H18_64_1B(mcu);
+    scene->addItem(pack);
+
+    for (int i = 0; i < 64; i++){
+        auto *p = new Pin(QString("P%1").arg(i+1,2,10, QChar('0')), pack->getPinOrientation(i+1), pack->getPinPos(i+1));
+        listPins.append(p);
+    }
+
+    for(int i =0; i < listPins.size(); i++){
+        scene->addItem(listPins.at(i));
+    }
+}
